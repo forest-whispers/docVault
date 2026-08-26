@@ -1,0 +1,21 @@
+{
+  "name": "docvault",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "^1.4.0",
+    "vitest": "^4.1.11"
+  },
+  "peerDependencies": {
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@prisma/client": "6",
+    "dotenv": "^17.4.2",
+    "graphql": "^17.0.2",
+    "graphql-yoga": "^5.22.0",
+    "prisma": "6",
+    "zod": "^4.4.3"
+  }
+}
