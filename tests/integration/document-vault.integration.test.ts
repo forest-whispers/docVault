@@ -1,8 +1,15 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { graphql } from "graphql";
+
+import * as graphqlTest from "graphql";
 
 import { prisma } from "../../src/shared/database/prisma.ts";
-import { schema } from "../../src/graphql/schema.ts";
+import { yoga } from "../../src/app.ts";
+
+console.log("TEST GRAPHQL VERSION:", graphqlTest.version);
+console.log(
+    "TEST GRAPHQL RESOLVE:",
+    import.meta.resolve("graphql")
+);
 
 type CreateCollectionData = {
     createCollection: {
@@ -46,24 +53,54 @@ describe("Document Vault integration", () => {
     it("creates a collection and document and retrieves the document", async () => {
         const collectionSlug = `integration-test-${Date.now()}`;
 
-        const createCollectionResult = await graphql({
-            schema,
-            source: `
-                mutation CreateCollection($input: CreateCollectionInput!) {
-                    createCollection(input: $input) {
-                        id
-                        name
-                        slug
-                    }
-                }
-            `,
-            variableValues: {
-                input: {
-                    name: "Integration Test Collection",
-                    slug: collectionSlug,
+        // const createCollectionResult = await graphql({
+        //     schema,
+        //     source: `
+        //         mutation CreateCollection($input: CreateCollectionInput!) {
+        //             createCollection(input: $input) {
+        //                 id
+        //                 name
+        //                 slug
+        //             }
+        //         }
+        //     `,
+        //     variableValues: {
+        //         input: {
+        //             name: "Integration Test Collection",
+        //             slug: collectionSlug,
+        //         },
+        //     },
+        // });
+
+        const createCollectionResponse = await yoga.fetch(
+            "http://localhost/graphql",
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
                 },
-            },
-        });
+                body: JSON.stringify({
+                    query: `
+                        mutation CreateCollection($input: CreateCollectionInput!) {
+                            createCollection(input: $input) {
+                                id
+                                name
+                                slug
+                            }
+                        }
+                    `,
+                    variables: {
+                        input: {
+                            name: "Integration Test Collection",
+                            slug: collectionSlug,
+                        },
+                    },
+                }),
+            }
+        );
+
+        const createCollectionResult =
+            await createCollectionResponse.json();        
 
         expect(createCollectionResult.errors).toBeUndefined();
         expect(createCollectionResult.data).toBeDefined();
@@ -81,29 +118,64 @@ describe("Document Vault integration", () => {
 
         const collectionId = collection.createCollection.id;
 
-        const createDocumentResult = await graphql({
-            schema,
-            source: `
-                mutation CreateDocument($input: CreateDocumentInput!) {
-                    createDocument(input: $input) {
-                        id
-                        title
-                        content
-                        tags
-                        collectionId
-                        isArchived
-                    }
-                }
-            `,
-            variableValues: {
-                input: {
-                    title: "Integration Test Document",
-                    content: "Testing PostgreSQL integration",
-                    tags: ["integration", "postgres"],
-                    collectionId,
+        // const createDocumentResult = await graphql({
+        //     schema,
+        //     source: `
+        //         mutation CreateDocument($input: CreateDocumentInput!) {
+        //             createDocument(input: $input) {
+        //                 id
+        //                 title
+        //                 content
+        //                 tags
+        //                 collectionId
+        //                 isArchived
+        //             }
+        //         }
+        //     `,
+        //     variableValues: {
+        //         input: {
+        //             title: "Integration Test Document",
+        //             content: "Testing PostgreSQL integration",
+        //             tags: ["integration", "postgres"],
+        //             collectionId,
+        //         },
+        //     },
+        // });
+
+        const createDocumentResponse = await yoga.fetch(
+            "http://localhost/graphql",
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
                 },
-            },
-        });
+                body: JSON.stringify({
+                    query: `
+                        mutation CreateDocument($input: CreateDocumentInput!) {
+                            createDocument(input: $input) {
+                                id
+                                title
+                                content
+                                tags
+                                collectionId
+                                isArchived
+                            }
+                        }
+                    `,
+                    variables: {
+                        input: {
+                            title: "Integration Test Document",
+                            content: "Testing PostgreSQL integration",
+                            tags: ["integration", "postgres"],
+                            collectionId,
+                        },
+                    },
+                }),
+            }
+        );
+
+        const createDocumentResult =
+            await createDocumentResponse.json();        
 
         expect(createDocumentResult.errors).toBeUndefined();
         expect(createDocumentResult.data).toBeDefined();
@@ -121,24 +193,53 @@ describe("Document Vault integration", () => {
 
         const documentId = document.createDocument.id;
 
-        const queryResult = await graphql({
-            schema,
-            source: `
-                query GetDocument($id: ID!) {
-                    document(id: $id) {
-                        id
-                        title
-                        content
-                        tags
-                        collectionId
-                        isArchived
-                    }
-                }
-            `,
-            variableValues: {
-                id: documentId,
-            },
-        });
+        // const queryResult = await graphql({
+        //     schema,
+        //     source: `
+        //         query GetDocument($id: ID!) {
+        //             document(id: $id) {
+        //                 id
+        //                 title
+        //                 content
+        //                 tags
+        //                 collectionId
+        //                 isArchived
+        //             }
+        //         }
+        //     `,
+        //     variableValues: {
+        //         id: documentId,
+        //     },
+        // });
+
+        const queryResponse = await yoga.fetch(
+            "http://localhost/graphql",
+            {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: `
+                        query GetDocument($id: ID!) {
+                            document(id: $id) {
+                                id
+                                title
+                                content
+                                tags
+                                collectionId
+                                isArchived
+                            }
+                        }
+                    `,
+                    variables: {
+                        id: documentId,
+                    },
+                }),
+            }
+        );
+
+        const queryResult = await queryResponse.json();        
 
         expect(queryResult.errors).toBeUndefined();
         expect(queryResult.data).toBeDefined();
