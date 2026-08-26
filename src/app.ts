@@ -17,4 +17,5 @@ const schema = createSchema({
 
 export const yoga = createYoga({
     schema,
+    maskedErrors: false,
 });
