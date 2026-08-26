@@ -18,6 +18,10 @@ interface DocumentArgs {
 
 interface DocumentsArgs {
     collectionId?: string;
+    search?: string;
+    isArchived?: boolean;
+    take?: number;
+    cursor?: string;
 }
 
 export const documentResolvers = {

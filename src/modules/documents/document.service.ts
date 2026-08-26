@@ -52,16 +52,73 @@ export const getDocuments = async (input: DocumentsInput) => {
         );
     }
 
-    return prisma.document.findMany({
-        ...(result.data.collectionId && {
-            where: {
-                collectionId: result.data.collectionId,
-            },
-        }),
+    const { collectionId, search, isArchived, take, cursor } = result.data;
+
+    const documents = await prisma.document.findMany({
+        where: {
+            ...(collectionId
+                ? {
+                    collectionId,
+                }
+                : {}),
+
+            ...(isArchived !== undefined
+                ? {
+                    isArchived,
+                }
+                : {}),
+
+            ...(search
+                ? {
+                    OR: [
+                        {
+                            title: {
+                                contains: search,
+                                mode: "insensitive",
+                            },
+                        },
+                        {
+                            content: {
+                                contains: search,
+                                mode: "insensitive",
+                            },
+                        },
+                    ],
+                }
+                : {}),
+        },
+
         orderBy: {
             createdAt: "asc",
         },
+
+        take: take + 1,
+
+        ...(cursor
+            ? {
+                cursor: {
+                    id: cursor,
+                },
+                skip: 1,
+            }
+            : {}),
     });
+
+    const hasNextPage = documents.length > take;
+
+    const nodes = hasNextPage
+        ? documents.slice(0, take)
+        : documents;
+
+    const endCursor = nodes.at(-1)?.id ?? null;
+
+    return {
+        nodes,
+        pageInfo: {
+            hasNextPage,
+            endCursor,
+        },
+    };
 };
 
 export const getDocumentById = async (input: DocumentIdInput) => {

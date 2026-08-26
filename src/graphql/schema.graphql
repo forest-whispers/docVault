@@ -15,11 +15,27 @@ type Document {
     createdAt: String!
 }
 
+type PageInfo {
+    hasNextPage: Boolean!
+    endCursor: ID
+}
+
+type DocumentConnection {
+    nodes: [Document!]!
+    pageInfo: PageInfo!
+}
+
 type Query {
     collections: [Collection!]!
     collection(id: ID!): Collection
 
-    documents(collectionId: ID): [Document!]!
+    documents(
+        collectionId: ID
+        search: String
+        isArchived: Boolean
+        take: Int
+        cursor: ID
+    ): DocumentConnection!
     document(id: ID!): Document
 }
 
