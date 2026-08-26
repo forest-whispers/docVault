@@ -2,7 +2,7 @@ import { prisma } from "../../shared/database/prisma.ts";
 import {
     NotFoundError,
     ValidationError,
-} from "../../shared/errors/errors.ts";
+} from "../../shared/errors/httpErrors.ts";
 import {
     createDocumentSchema,
     idSchema,

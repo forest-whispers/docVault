@@ -3,7 +3,7 @@ import {
     ConflictError,
     NotFoundError,
     ValidationError,
-} from "../../shared/errors/errors.ts";
+} from "../../shared/errors/httpErrors.ts";
 import {
     collectionIdSchema,
     createCollectionSchema,

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { resolvers } from "./graphql/resolvers";
+import { formatGraphQLError } from "./graphql/errors";
 
 const schemaPath = fileURLToPath(
     new URL("./graphql/schema.graphql", import.meta.url)
@@ -17,5 +18,7 @@ const schema = createSchema({
 
 export const yoga = createYoga({
     schema,
-    maskedErrors: false,
+    maskedErrors: {
+        maskError: formatGraphQLError,
+    },
 });
