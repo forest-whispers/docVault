@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock(
-    "../../../../../../src/modules/collections/collection.service.ts",
+    "../../../src/modules/collections/collection.service.ts",
     () => ({
         createCollection: vi.fn(),
         getCollections: vi.fn(),
@@ -10,7 +10,7 @@ vi.mock(
 );
 
 vi.mock(
-    "../../../../../../src/modules/documents/document.service.ts",
+    "../../../src/modules/documents/document.service.ts",
     () => ({
         getDocumentsByCollectionId: vi.fn(),
     })
