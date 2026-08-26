@@ -12,6 +12,7 @@ import type {
     CreateDocumentInput,
     DocumentIdInput,
     DocumentsInput,
+    DocumentsViaCollectionInput,
 } from "./document.types.ts";
 
 export const createDocument = async (input: CreateDocumentInput) => {
@@ -141,4 +142,15 @@ export const getDocumentById = async (input: DocumentIdInput) => {
     }
 
     return document;
+};
+
+export const getDocumentsByCollectionId = async (input: DocumentsViaCollectionInput) => {
+    return prisma.document.findMany({
+        where: {
+            collectionId: input.collectionId,
+        },
+        orderBy: {
+            createdAt: "asc",
+        },
+    });
 };

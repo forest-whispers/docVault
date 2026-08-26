@@ -11,4 +11,8 @@ export const resolvers = {
         ...collectionResolvers.Mutation,
         ...documentResolvers.Mutation,
     },
+
+    Collection: {
+        ...collectionResolvers.Collection,
+    },
 };

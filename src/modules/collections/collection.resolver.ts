@@ -1,3 +1,4 @@
+import { getDocumentsByCollectionId } from "../documents/document.service.ts";
 import { createCollection, getCollections, getCollectionById } from "./collection.service.ts";
 
 interface CreateCollectionArgs {
@@ -8,6 +9,10 @@ interface CreateCollectionArgs {
 }
 
 interface CollectionArgs {
+    id: string;
+}
+
+interface CollectionParent {
     id: string;
 }
 
@@ -26,5 +31,13 @@ export const collectionResolvers = {
             _: unknown,
             args: CreateCollectionArgs
         ) => createCollection(args.input),
+    },
+
+    Collection: {
+        documents: (
+            collection: CollectionParent
+        ) => getDocumentsByCollectionId({
+            collectionId: collection.id
+        }),
     },
 };

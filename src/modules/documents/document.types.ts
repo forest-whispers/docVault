@@ -13,6 +13,10 @@ export interface DocumentsInput {
     collectionId?: string;
 }
 
+export interface DocumentsViaCollectionInput {
+    collectionId: string;
+}
+
 export interface DocumentsInput {
     collectionId?: string;
     search?: string;
