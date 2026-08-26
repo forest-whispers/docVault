@@ -68,4 +68,6 @@ type Mutation {
     id: ID!
     input: UpdateDocumentInput!
     ): Document!
+
+    deleteDocument(id: ID!): Document!
 }

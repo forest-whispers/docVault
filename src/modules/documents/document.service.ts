@@ -177,13 +177,13 @@ export const updateDocument = async (
         );
     }
 
-    const existingDocument = await prisma.document.findUnique({
+    const existing = await prisma.document.findUnique({
         where: {
             id: idResult.data.id,
         },
     });
 
-    if (!existingDocument) {
+    if (!existing) {
         throw new NotFoundError("Document not found.");
     }
 
@@ -205,6 +205,32 @@ export const updateDocument = async (
             ...(inputResult.data.isArchived !== undefined && {
                 isArchived: inputResult.data.isArchived,
             }),
+        },
+    });
+};
+
+export const deleteDocument = async (id: string) => {
+    const result = documentIdSchema.safeParse({ id });
+
+    if (!result.success) {
+        throw new ValidationError(
+            result.error.issues[0]?.message ?? "Invalid document ID."
+        );
+    }
+
+    const existing = await prisma.document.findUnique({
+        where: {
+            id: result.data.id,
+        },
+    });
+
+    if (!existing) {
+        throw new NotFoundError("Document not found.");
+    }
+
+    return prisma.document.delete({
+        where: {
+            id: result.data.id,
         },
     });
 };

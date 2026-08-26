@@ -1,5 +1,6 @@
 import {
     createDocument,
+    deleteDocument,
     getDocumentById,
     getDocuments,
     updateDocument,
@@ -53,5 +54,10 @@ export const documentResolvers = {
             _: unknown,
             args: UpdateDocumentArgs
         ) => updateDocument(args.id, args.input),
+
+        deleteDocument: (
+            _: unknown,
+            args: DocumentArgs
+        ) => deleteDocument(args.id),
     },
 };
