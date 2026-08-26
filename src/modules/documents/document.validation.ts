@@ -44,6 +44,6 @@ export const documentsSchema = z.object({
     cursor: z.string().trim().min(1).optional(),
 });
 
-export const documentIdSchema = z.object({
+export const idSchema = z.object({
     id: z.string().trim().min(1, "Document ID cannot be empty."),
 });

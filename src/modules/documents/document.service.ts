@@ -5,7 +5,7 @@ import {
 } from "../../shared/errors/errors.ts";
 import {
     createDocumentSchema,
-    documentIdSchema,
+    idSchema,
     documentsSchema,
     updateDocumentSchema,
 } from "./document.validation.ts";
@@ -125,7 +125,7 @@ export const getDocuments = async (input: DocumentsInput) => {
 };
 
 export const getDocumentById = async (input: DocumentIdInput) => {
-    const result = documentIdSchema.safeParse(input);
+    const result = idSchema.safeParse(input);
 
     if (!result.success) {
         throw new ValidationError(
@@ -161,7 +161,7 @@ export const updateDocument = async (
     id: string,
     input: UpdateDocumentInput
 ) => {
-    const idResult = documentIdSchema.safeParse({ id });
+    const idResult = idSchema.safeParse({ id });
 
     if (!idResult.success) {
         throw new ValidationError(
@@ -209,8 +209,62 @@ export const updateDocument = async (
     });
 };
 
+export const moveDocument = async (
+    id: string,
+    collectionId: string
+) => {
+    const documentResult = idSchema.safeParse({ id });
+
+    if (!documentResult.success) {
+        throw new ValidationError(
+            documentResult.error.issues[0]?.message ??
+            "Invalid document ID."
+        );
+    }
+
+    const collectionResult = idSchema.safeParse({
+        id: collectionId,
+    });
+
+    if (!collectionResult.success) {
+        throw new ValidationError(
+            collectionResult.error.issues[0]?.message ??
+            "Invalid collection ID."
+        );
+    }
+
+    const existing = await prisma.document.findUnique({
+        where: {
+            id: documentResult.data.id,
+        },
+    });
+
+    if (!existing) {
+        throw new NotFoundError("Document not found.");
+    }
+
+    const existingCollection = await prisma.collection.findUnique({
+        where: {
+            id: collectionResult.data.id,
+        },
+    });
+
+    if (!existingCollection) {
+        throw new NotFoundError("Target collection not found.");
+    }
+
+    return prisma.document.update({
+        where: {
+            id: documentResult.data.id,
+        },
+        data: {
+            collectionId: collectionResult.data.id,
+        },
+    });
+};
+
 export const deleteDocument = async (id: string) => {
-    const result = documentIdSchema.safeParse({ id });
+    const result = idSchema.safeParse({ id });
 
     if (!result.success) {
         throw new ValidationError(

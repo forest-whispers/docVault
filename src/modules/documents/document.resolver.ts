@@ -3,6 +3,7 @@ import {
     deleteDocument,
     getDocumentById,
     getDocuments,
+    moveDocument,
     updateDocument,
 } from "./document.service.ts";
 import type {
@@ -31,6 +32,11 @@ interface UpdateDocumentArgs {
     input: UpdateDocumentInput;
 }
 
+interface MoveDocumentArgs {
+    id: string;
+    collectionId: string;
+}
+
 export const documentResolvers = {
     Query: {
         documents: (
@@ -54,6 +60,11 @@ export const documentResolvers = {
             _: unknown,
             args: UpdateDocumentArgs
         ) => updateDocument(args.id, args.input),
+
+        moveDocument: (
+            _: unknown,
+            args: MoveDocumentArgs
+        ) => moveDocument(args.id, args.collectionId),
 
         deleteDocument: (
             _: unknown,

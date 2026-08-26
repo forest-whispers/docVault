@@ -69,5 +69,10 @@ type Mutation {
     input: UpdateDocumentInput!
     ): Document!
 
+    moveDocument(
+    id: ID!
+    collectionId: ID!
+    ): Document!
+
     deleteDocument(id: ID!): Document!
 }
