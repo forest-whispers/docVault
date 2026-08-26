@@ -2,10 +2,11 @@ import {
     createDocument,
     getDocumentById,
     getDocuments,
+    updateDocument,
 } from "./document.service.ts";
 import type {
     CreateDocumentInput,
-    DocumentsInput,
+    UpdateDocumentInput,
 } from "./document.types.ts";
 
 interface CreateDocumentArgs {
@@ -22,6 +23,11 @@ interface DocumentsArgs {
     isArchived?: boolean;
     take?: number;
     cursor?: string;
+}
+
+interface UpdateDocumentArgs {
+    id: string;
+    input: UpdateDocumentInput;
 }
 
 export const documentResolvers = {
@@ -42,5 +48,10 @@ export const documentResolvers = {
             _: unknown,
             args: CreateDocumentArgs
         ) => createDocument(args.input),
+
+        updateDocument: (
+            _: unknown,
+            args: UpdateDocumentArgs
+        ) => updateDocument(args.id, args.input),
     },
 };

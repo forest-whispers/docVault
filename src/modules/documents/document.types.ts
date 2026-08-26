@@ -25,6 +25,13 @@ export interface DocumentsInput {
     cursor?: string;
 }
 
+export interface UpdateDocumentInput {
+    title?: string;
+    content?: string;
+    tags?: string[];
+    isArchived?: boolean;
+}
+
 export interface DocumentConnection {
     nodes: Array<{
         id: string;

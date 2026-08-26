@@ -52,8 +52,20 @@ input CreateDocumentInput {
     collectionId: ID!
 }
 
+input UpdateDocumentInput {
+    title: String
+    content: String
+    tags: [String!]
+    isArchived: Boolean
+}
+
 type Mutation {
     createCollection(input: CreateCollectionInput!): Collection!
 
     createDocument(input: CreateDocumentInput!): Document!
+
+    updateDocument(
+    id: ID!
+    input: UpdateDocumentInput!
+    ): Document!
 }

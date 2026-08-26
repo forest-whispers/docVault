@@ -7,12 +7,14 @@ import {
     createDocumentSchema,
     documentIdSchema,
     documentsSchema,
+    updateDocumentSchema,
 } from "./document.validation.ts";
 import type {
     CreateDocumentInput,
     DocumentIdInput,
     DocumentsInput,
     DocumentsViaCollectionInput,
+    UpdateDocumentInput,
 } from "./document.types.ts";
 
 export const createDocument = async (input: CreateDocumentInput) => {
@@ -151,6 +153,58 @@ export const getDocumentsByCollectionId = async (input: DocumentsViaCollectionIn
         },
         orderBy: {
             createdAt: "asc",
+        },
+    });
+};
+
+export const updateDocument = async (
+    id: string,
+    input: UpdateDocumentInput
+) => {
+    const idResult = documentIdSchema.safeParse({ id });
+
+    if (!idResult.success) {
+        throw new ValidationError(
+            idResult.error.issues[0]?.message ?? "Invalid document ID."
+        );
+    }
+
+    const inputResult = updateDocumentSchema.safeParse(input);
+
+    if (!inputResult.success) {
+        throw new ValidationError(
+            inputResult.error.issues[0]?.message ?? "Invalid document input."
+        );
+    }
+
+    const existingDocument = await prisma.document.findUnique({
+        where: {
+            id: idResult.data.id,
+        },
+    });
+
+    if (!existingDocument) {
+        throw new NotFoundError("Document not found.");
+    }
+
+    return prisma.document.update({
+        where: {
+            id: idResult.data.id,
+        },
+
+        data: {
+            ...(inputResult.data.title !== undefined && {
+                title: inputResult.data.title,
+            }),
+            ...(inputResult.data.content !== undefined && {
+                content: inputResult.data.content,
+            }),
+            ...(inputResult.data.tags !== undefined && {
+                tags: inputResult.data.tags,
+            }),
+            ...(inputResult.data.isArchived !== undefined && {
+                isArchived: inputResult.data.isArchived,
+            }),
         },
     });
 };
