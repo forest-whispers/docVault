@@ -5,9 +5,22 @@ type Collection {
     createdAt: String!
 }
 
+type Document {
+    id: ID!
+    title: String!
+    content: String!
+    tags: [String!]!
+    collectionId: ID!
+    isArchived: Boolean!
+    createdAt: String!
+}
+
 type Query {
     collections: [Collection!]!
     collection(id: ID!): Collection
+
+    documents(collectionId: ID): [Document!]!
+    document(id: ID!): Document
 }
 
 input CreateCollectionInput {
@@ -15,6 +28,15 @@ input CreateCollectionInput {
     slug: String!
 }
 
+input CreateDocumentInput {
+    title: String!
+    content: String!
+    tags: [String!]!
+    collectionId: ID!
+}
+
 type Mutation {
     createCollection(input: CreateCollectionInput!): Collection!
+
+    createDocument(input: CreateDocumentInput!): Document!
 }
