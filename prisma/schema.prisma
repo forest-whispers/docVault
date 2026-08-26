@@ -13,6 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  name String @unique
+model Collection {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  documents Document[]
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  title        String
+  content      String
+  tags         String[]
+  collectionId String
+  isArchived   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  collection Collection @relation(fields: [collectionId], references: [id])
 }
