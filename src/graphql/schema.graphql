@@ -1,0 +1,20 @@
+type Collection {
+    id: ID!
+    name: String!
+    slug: String!
+    createdAt: String!
+}
+
+type Query {
+    collections: [Collection!]!
+    collection(id: ID!): Collection
+}
+
+input CreateCollectionInput {
+    name: String!
+    slug: String!
+}
+
+type Mutation {
+    createCollection(input: CreateCollectionInput!): Collection!
+}

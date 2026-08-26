@@ -1,4 +1,11 @@
+import { collectionResolvers } from "../modules/collections/collection.resolver.ts";
+
 export const resolvers = {
-    Query: {},
-    Mutation: {},
+    Query: {
+        ...collectionResolvers.Query,
+    },
+
+    Mutation: {
+        ...collectionResolvers.Mutation,
+    },
 };
