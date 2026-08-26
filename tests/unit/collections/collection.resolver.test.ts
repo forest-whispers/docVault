@@ -16,10 +16,10 @@ vi.mock(
     })
 );
 
-import { createCollection, getCollections, getCollectionById  } from "../../../../../../src/modules/collections/collection.service.ts";
-import { getDocumentsByCollectionId } from "../../../../../../src/modules/documents/document.service.ts";
+import { createCollection, getCollections, getCollectionById  } from "../../../src/modules/collections/collection.service.ts";
+import { getDocumentsByCollectionId } from "../../../src/modules/documents/document.service.ts";
 
-import { collectionResolvers } from "../../../../../../src/modules/collections/collection.resolver.ts";
+import { collectionResolvers } from "../../../src/modules/collections/collection.resolver.ts";
 
 const mockCollection = {
     id: "collection-1",
