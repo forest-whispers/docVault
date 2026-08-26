@@ -9,10 +9,6 @@ export interface DocumentIdInput {
     id: string;
 }
 
-export interface DocumentsInput {
-    collectionId?: string;
-}
-
 export interface DocumentsViaCollectionInput {
     collectionId: string;
 }

@@ -1,12 +1,11 @@
-import { createSchema, createYoga } from "graphql-yoga";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-
-import { resolvers } from "./graphql/resolvers";
+import { createSchema, createYoga } from "graphql-yoga";
 import { formatGraphQLError } from "./graphql/errors";
+import { resolvers } from "./graphql/resolvers";
 
 const schemaPath = fileURLToPath(
-    new URL("./graphql/schema.graphql", import.meta.url)
+    new URL("./graphql/schema.graphql", import.meta.url),
 );
 
 const typeDefs = readFileSync(schemaPath, "utf8");

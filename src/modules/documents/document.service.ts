@@ -3,12 +3,6 @@ import {
     NotFoundError,
     ValidationError,
 } from "../../shared/errors/httpErrors.ts";
-import {
-    createDocumentSchema,
-    idSchema,
-    documentsSchema,
-    updateDocumentSchema,
-} from "./document.validation.ts";
 import type {
     CreateDocumentInput,
     DocumentIdInput,
@@ -16,13 +10,19 @@ import type {
     DocumentsViaCollectionInput,
     UpdateDocumentInput,
 } from "./document.types.ts";
+import {
+    createDocumentSchema,
+    documentsSchema,
+    idSchema,
+    updateDocumentSchema,
+} from "./document.validation.ts";
 
 export const createDocument = async (input: CreateDocumentInput) => {
     const result = createDocumentSchema.safeParse(input);
 
     if (!result.success) {
         throw new ValidationError(
-            result.error.issues[0]?.message ?? "Invalid document input."
+            result.error.issues[0]?.message ?? "Invalid document input.",
         );
     }
 
@@ -51,7 +51,7 @@ export const getDocuments = async (input: DocumentsInput) => {
 
     if (!result.success) {
         throw new ValidationError(
-            result.error.issues[0]?.message ?? "Invalid document filters."
+            result.error.issues[0]?.message ?? "Invalid document filters.",
         );
     }
 
@@ -61,33 +61,33 @@ export const getDocuments = async (input: DocumentsInput) => {
         where: {
             ...(collectionId
                 ? {
-                    collectionId,
-                }
+                      collectionId,
+                  }
                 : {}),
 
             ...(isArchived !== undefined
                 ? {
-                    isArchived,
-                }
+                      isArchived,
+                  }
                 : {}),
 
             ...(search
                 ? {
-                    OR: [
-                        {
-                            title: {
-                                contains: search,
-                                mode: "insensitive",
-                            },
-                        },
-                        {
-                            content: {
-                                contains: search,
-                                mode: "insensitive",
-                            },
-                        },
-                    ],
-                }
+                      OR: [
+                          {
+                              title: {
+                                  contains: search,
+                                  mode: "insensitive",
+                              },
+                          },
+                          {
+                              content: {
+                                  contains: search,
+                                  mode: "insensitive",
+                              },
+                          },
+                      ],
+                  }
                 : {}),
         },
 
@@ -99,19 +99,17 @@ export const getDocuments = async (input: DocumentsInput) => {
 
         ...(cursor
             ? {
-                cursor: {
-                    id: cursor,
-                },
-                skip: 1,
-            }
+                  cursor: {
+                      id: cursor,
+                  },
+                  skip: 1,
+              }
             : {}),
     });
 
     const hasNextPage = documents.length > take;
 
-    const nodes = hasNextPage
-        ? documents.slice(0, take)
-        : documents;
+    const nodes = hasNextPage ? documents.slice(0, take) : documents;
 
     const endCursor = nodes.at(-1)?.id ?? null;
 
@@ -129,7 +127,7 @@ export const getDocumentById = async (input: DocumentIdInput) => {
 
     if (!result.success) {
         throw new ValidationError(
-            result.error.issues[0]?.message ?? "Invalid document ID."
+            result.error.issues[0]?.message ?? "Invalid document ID.",
         );
     }
 
@@ -146,7 +144,9 @@ export const getDocumentById = async (input: DocumentIdInput) => {
     return document;
 };
 
-export const getDocumentsByCollectionId = async (input: DocumentsViaCollectionInput) => {
+export const getDocumentsByCollectionId = async (
+    input: DocumentsViaCollectionInput,
+) => {
     return prisma.document.findMany({
         where: {
             collectionId: input.collectionId,
@@ -159,13 +159,13 @@ export const getDocumentsByCollectionId = async (input: DocumentsViaCollectionIn
 
 export const updateDocument = async (
     id: string,
-    input: UpdateDocumentInput
+    input: UpdateDocumentInput,
 ) => {
     const idResult = idSchema.safeParse({ id });
 
     if (!idResult.success) {
         throw new ValidationError(
-            idResult.error.issues[0]?.message ?? "Invalid document ID."
+            idResult.error.issues[0]?.message ?? "Invalid document ID.",
         );
     }
 
@@ -173,7 +173,7 @@ export const updateDocument = async (
 
     if (!inputResult.success) {
         throw new ValidationError(
-            inputResult.error.issues[0]?.message ?? "Invalid document input."
+            inputResult.error.issues[0]?.message ?? "Invalid document input.",
         );
     }
 
@@ -209,16 +209,12 @@ export const updateDocument = async (
     });
 };
 
-export const moveDocument = async (
-    id: string,
-    collectionId: string
-) => {
+export const moveDocument = async (id: string, collectionId: string) => {
     const documentResult = idSchema.safeParse({ id });
 
     if (!documentResult.success) {
         throw new ValidationError(
-            documentResult.error.issues[0]?.message ??
-            "Invalid document ID."
+            documentResult.error.issues[0]?.message ?? "Invalid document ID.",
         );
     }
 
@@ -229,7 +225,7 @@ export const moveDocument = async (
     if (!collectionResult.success) {
         throw new ValidationError(
             collectionResult.error.issues[0]?.message ??
-            "Invalid collection ID."
+                "Invalid collection ID.",
         );
     }
 
@@ -268,7 +264,7 @@ export const deleteDocument = async (id: string) => {
 
     if (!result.success) {
         throw new ValidationError(
-            result.error.issues[0]?.message ?? "Invalid document ID."
+            result.error.issues[0]?.message ?? "Invalid document ID.",
         );
     }
 

@@ -1,5 +1,9 @@
 import { getDocumentsByCollectionId } from "../documents/document.service.ts";
-import { createCollection, getCollections, getCollectionById } from "./collection.service.ts";
+import {
+    createCollection,
+    getCollectionById,
+    getCollections,
+} from "./collection.service.ts";
 
 interface CreateCollectionArgs {
     input: {
@@ -20,24 +24,19 @@ export const collectionResolvers = {
     Query: {
         collections: () => getCollections(),
 
-        collection: (
-            _: unknown,
-            args: CollectionArgs
-        ) => getCollectionById(args),
+        collection: (_: unknown, args: CollectionArgs) =>
+            getCollectionById(args),
     },
 
     Mutation: {
-        createCollection: (
-            _: unknown,
-            args: CreateCollectionArgs
-        ) => createCollection(args.input),
+        createCollection: (_: unknown, args: CreateCollectionArgs) =>
+            createCollection(args.input),
     },
 
     Collection: {
-        documents: (
-            collection: CollectionParent
-        ) => getDocumentsByCollectionId({
-            collectionId: collection.id
-        }),
+        documents: (collection: CollectionParent) =>
+            getDocumentsByCollectionId({
+                collectionId: collection.id,
+            }),
     },
 };

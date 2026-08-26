@@ -1,33 +1,35 @@
 {
-  "name": "docvault",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "bun --watch src/server.ts",
-    "start": "bun src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "generate": "prisma generate",
-    "migrate": "prisma migrate dev",
-    "studio": "prisma studio",
-    "gendb": "prisma generate"
-  },
-  "devDependencies": {
-    "@types/bun": "^1.4.0",
-    "vitest": "^4.1.11",
-    "prisma": "6",
-    "typescript": "^7.0.2"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "@prisma/client": "6",
-    "dotenv": "^17.4.2",
-    "graphql": "^17.0.2",
-    "graphql-yoga": "^5.22.0",
-    "prisma": "6",
-    "zod": "^4.4.3"
-  }
+    "name": "docvault",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "bun --watch src/server.ts",
+        "start": "bun src/server.ts",
+        "lint": "biome check src tests",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "sanity": "bun run lint && bun run typecheck && bun test",
+        "generate": "prisma generate",
+        "migrate": "prisma migrate dev",
+        "studio": "prisma studio",
+        "gendb": "prisma generate && prisma migrate deploy"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.5.10",
+        "@types/bun": "^1.4.0",
+        "prisma": "6",
+        "typescript": "^7.0.2",
+        "vitest": "^4.1.11"
+    },
+    "peerDependencies": {
+        "typescript": "^7.0.2"
+    },
+    "dependencies": {
+        "@prisma/client": "6",
+        "dotenv": "^17.4.2",
+        "graphql": "^17.0.2",
+        "graphql-yoga": "^5.22.0",
+        "zod": "^4.4.3"
+    }
 }

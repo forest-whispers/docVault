@@ -1,15 +1,10 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
-
 import * as graphqlTest from "graphql";
-
-import { prisma } from "../../src/shared/database/prisma.ts";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { yoga } from "../../src/app.ts";
+import { prisma } from "../../src/shared/database/prisma.ts";
 
 console.log("TEST GRAPHQL VERSION:", graphqlTest.version);
-console.log(
-    "TEST GRAPHQL RESOLVE:",
-    import.meta.resolve("graphql")
-);
+console.log("TEST GRAPHQL RESOLVE:", import.meta.resolve("graphql"));
 
 type CreateCollectionData = {
     createCollection: {
@@ -96,25 +91,21 @@ describe("Document Vault integration", () => {
                         },
                     },
                 }),
-            }
+            },
         );
 
-        const createCollectionResult =
-            await createCollectionResponse.json();        
+        const createCollectionResult = await createCollectionResponse.json();
 
         expect(createCollectionResult.errors).toBeUndefined();
         expect(createCollectionResult.data).toBeDefined();
 
-        const collection =
-            createCollectionResult.data as CreateCollectionData;
+        const collection = createCollectionResult.data as CreateCollectionData;
 
         expect(collection.createCollection).toBeDefined();
         expect(collection.createCollection.name).toBe(
-            "Integration Test Collection"
+            "Integration Test Collection",
         );
-        expect(collection.createCollection.slug).toBe(
-            collectionSlug
-        );
+        expect(collection.createCollection.slug).toBe(collectionSlug);
 
         const collectionId = collection.createCollection.id;
 
@@ -171,25 +162,19 @@ describe("Document Vault integration", () => {
                         },
                     },
                 }),
-            }
+            },
         );
 
-        const createDocumentResult =
-            await createDocumentResponse.json();        
+        const createDocumentResult = await createDocumentResponse.json();
 
         expect(createDocumentResult.errors).toBeUndefined();
         expect(createDocumentResult.data).toBeDefined();
 
-        const document =
-            createDocumentResult.data as CreateDocumentData;
+        const document = createDocumentResult.data as CreateDocumentData;
 
         expect(document.createDocument).toBeDefined();
-        expect(document.createDocument.title).toBe(
-            "Integration Test Document"
-        );
-        expect(document.createDocument.collectionId).toBe(
-            collectionId
-        );
+        expect(document.createDocument.title).toBe("Integration Test Document");
+        expect(document.createDocument.collectionId).toBe(collectionId);
 
         const documentId = document.createDocument.id;
 
@@ -212,15 +197,13 @@ describe("Document Vault integration", () => {
         //     },
         // });
 
-        const queryResponse = await yoga.fetch(
-            "http://localhost/graphql",
-            {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                },
-                body: JSON.stringify({
-                    query: `
+        const queryResponse = await yoga.fetch("http://localhost/graphql", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({
+                query: `
                         query GetDocument($id: ID!) {
                             document(id: $id) {
                                 id
@@ -232,20 +215,18 @@ describe("Document Vault integration", () => {
                             }
                         }
                     `,
-                    variables: {
-                        id: documentId,
-                    },
-                }),
-            }
-        );
+                variables: {
+                    id: documentId,
+                },
+            }),
+        });
 
-        const queryResult = await queryResponse.json();        
+        const queryResult = await queryResponse.json();
 
         expect(queryResult.errors).toBeUndefined();
         expect(queryResult.data).toBeDefined();
 
-        const queryData =
-            queryResult.data as GetDocumentData;
+        const queryData = queryResult.data as GetDocumentData;
 
         expect(queryData.document).toBeDefined();
 

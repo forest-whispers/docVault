@@ -2,9 +2,7 @@ import { GraphQLError } from "graphql";
 
 import { AppError } from "../shared/errors/AppError.ts";
 
-export const formatGraphQLError = (
-    error: unknown
-): GraphQLError => {
+export const formatGraphQLError = (error: unknown): GraphQLError => {
     if (error instanceof GraphQLError) {
         const originalError = error.originalError;
 

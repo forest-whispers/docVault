@@ -9,6 +9,7 @@ vi.mock("../../../src/modules/documents/document.service.ts", () => ({
     moveDocument: vi.fn(),
 }));
 
+import { documentResolvers } from "../../../src/modules/documents/document.resolver.ts";
 import {
     createDocument,
     deleteDocument,
@@ -17,8 +18,6 @@ import {
     moveDocument,
     updateDocument,
 } from "../../../src/modules/documents/document.service.ts";
-
-import { documentResolvers } from "../../../src/modules/documents/document.resolver.ts";
 
 const mockDocument = {
     id: "document-1",
@@ -51,11 +50,10 @@ describe("document resolvers", () => {
                 cursor: "cursor-1",
             };
 
-            const result =
-                await documentResolvers.Query.documents(
-                    undefined,
-                    args
-                );
+            const result = await documentResolvers.Query.documents(
+                undefined,
+                args,
+            );
 
             expect(getDocuments).toHaveBeenCalledWith(args);
             expect(result).toEqual(expected);
@@ -67,16 +65,14 @@ describe("document resolvers", () => {
             const expected = {
                 ...mockDocument,
                 id: "document-1",
-                title: "GraphQL"
+                title: "GraphQL",
             };
 
             vi.mocked(getDocumentById).mockResolvedValue(expected);
 
-            const result =
-                await documentResolvers.Query.document(
-                    undefined,
-                    { id: "document-1" }
-                );
+            const result = await documentResolvers.Query.document(undefined, {
+                id: "document-1",
+            });
 
             expect(getDocumentById).toHaveBeenCalledWith({
                 id: "document-1",
@@ -102,11 +98,10 @@ describe("document resolvers", () => {
 
             vi.mocked(createDocument).mockResolvedValue(expected);
 
-            const result =
-                await documentResolvers.Mutation.createDocument(
-                    undefined,
-                    { input }
-                );
+            const result = await documentResolvers.Mutation.createDocument(
+                undefined,
+                { input },
+            );
 
             expect(createDocument).toHaveBeenCalledWith(input);
             expect(result).toEqual(expected);
@@ -128,19 +123,15 @@ describe("document resolvers", () => {
 
             vi.mocked(updateDocument).mockResolvedValue(expected);
 
-            const result =
-                await documentResolvers.Mutation.updateDocument(
-                    undefined,
-                    {
-                        id: "document-1",
-                        input,
-                    }
-                );
-
-            expect(updateDocument).toHaveBeenCalledWith(
-                "document-1",
-                input
+            const result = await documentResolvers.Mutation.updateDocument(
+                undefined,
+                {
+                    id: "document-1",
+                    input,
+                },
             );
+
+            expect(updateDocument).toHaveBeenCalledWith("document-1", input);
 
             expect(result).toEqual(expected);
         });
@@ -155,15 +146,12 @@ describe("document resolvers", () => {
 
             vi.mocked(deleteDocument).mockResolvedValue(expected);
 
-            const result =
-                await documentResolvers.Mutation.deleteDocument(
-                    undefined,
-                    { id: "document-1" }
-                );
-
-            expect(deleteDocument).toHaveBeenCalledWith(
-                "document-1"
+            const result = await documentResolvers.Mutation.deleteDocument(
+                undefined,
+                { id: "document-1" },
             );
+
+            expect(deleteDocument).toHaveBeenCalledWith("document-1");
 
             expect(result).toEqual(expected);
         });
@@ -178,18 +166,17 @@ describe("document resolvers", () => {
 
             vi.mocked(moveDocument).mockResolvedValue(expected);
 
-            const result =
-                await documentResolvers.Mutation.moveDocument(
-                    undefined,
-                    {
-                        id: "document-1",
-                        collectionId: "collection-2",
-                    }
-                );
+            const result = await documentResolvers.Mutation.moveDocument(
+                undefined,
+                {
+                    id: "document-1",
+                    collectionId: "collection-2",
+                },
+            );
 
             expect(moveDocument).toHaveBeenCalledWith(
                 "document-1",
-                "collection-2"
+                "collection-2",
             );
 
             expect(result).toEqual(expected);

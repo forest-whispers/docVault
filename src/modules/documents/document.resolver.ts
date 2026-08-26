@@ -39,36 +39,22 @@ interface MoveDocumentArgs {
 
 export const documentResolvers = {
     Query: {
-        documents: (
-            _: unknown,
-            args: DocumentsArgs
-        ) => getDocuments(args),
+        documents: (_: unknown, args: DocumentsArgs) => getDocuments(args),
 
-        document: (
-            _: unknown,
-            args: DocumentArgs
-        ) => getDocumentById(args),
+        document: (_: unknown, args: DocumentArgs) => getDocumentById(args),
     },
 
     Mutation: {
-        createDocument: (
-            _: unknown,
-            args: CreateDocumentArgs
-        ) => createDocument(args.input),
+        createDocument: (_: unknown, args: CreateDocumentArgs) =>
+            createDocument(args.input),
 
-        updateDocument: (
-            _: unknown,
-            args: UpdateDocumentArgs
-        ) => updateDocument(args.id, args.input),
+        updateDocument: (_: unknown, args: UpdateDocumentArgs) =>
+            updateDocument(args.id, args.input),
 
-        moveDocument: (
-            _: unknown,
-            args: MoveDocumentArgs
-        ) => moveDocument(args.id, args.collectionId),
+        moveDocument: (_: unknown, args: MoveDocumentArgs) =>
+            moveDocument(args.id, args.collectionId),
 
-        deleteDocument: (
-            _: unknown,
-            args: DocumentArgs
-        ) => deleteDocument(args.id),
+        deleteDocument: (_: unknown, args: DocumentArgs) =>
+            deleteDocument(args.id),
     },
 };

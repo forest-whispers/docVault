@@ -4,20 +4,22 @@ import {
     NotFoundError,
     ValidationError,
 } from "../../shared/errors/httpErrors.ts";
-import {
-    collectionIdSchema,
-    createCollectionSchema,
-} from "./collection.validation.ts";
 import type {
     CollectionIdInput,
     CreateCollectionInput,
 } from "./collection.types.ts";
+import {
+    collectionIdSchema,
+    createCollectionSchema,
+} from "./collection.validation.ts";
 
 export const createCollection = async (input: CreateCollectionInput) => {
     const result = createCollectionSchema.safeParse(input);
 
     if (!result.success) {
-        throw new ValidationError(result.error.issues[0]?.message ?? "Invalid collection input.");
+        throw new ValidationError(
+            result.error.issues[0]?.message ?? "Invalid collection input.",
+        );
     }
 
     const existing = await prisma.collection.findUnique({
@@ -36,7 +38,7 @@ export const createCollection = async (input: CreateCollectionInput) => {
             slug: result.data.slug,
         },
     });
-}
+};
 
 export const getCollections = async () => {
     return prisma.collection.findMany({
@@ -44,13 +46,15 @@ export const getCollections = async () => {
             createdAt: "asc",
         },
     });
-}
+};
 
 export const getCollectionById = async (input: CollectionIdInput) => {
     const result = collectionIdSchema.safeParse(input);
 
     if (!result.success) {
-        throw new ValidationError(result.error.issues[0]?.message ?? "Invalid collection ID.");
+        throw new ValidationError(
+            result.error.issues[0]?.message ?? "Invalid collection ID.",
+        );
     }
 
     const collection = await prisma.collection.findUnique({
@@ -64,4 +68,4 @@ export const getCollectionById = async (input: CollectionIdInput) => {
     }
 
     return collection;
-}
+};

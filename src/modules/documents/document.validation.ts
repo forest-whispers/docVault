@@ -33,8 +33,8 @@ export const updateDocumentSchema = z
             input.isArchived !== undefined,
         {
             message: "At least one field must be provided for update.",
-        }
-);
+        },
+    );
 
 export const documentsSchema = z.object({
     collectionId: z.string().trim().min(1).optional(),

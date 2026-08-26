@@ -8,7 +8,7 @@ export const createCollectionSchema = z.object({
         .min(3, "Slug cannot be empty.")
         .regex(
             /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-            "Slug must contain only lowercase letters, numbers, and single hyphens."
+            "Slug must contain only lowercase letters, numbers, and single hyphens.",
         ),
 });
 
