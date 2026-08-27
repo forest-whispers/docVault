@@ -175,19 +175,33 @@ http://localhost:4000/graphql
 
 ## Testing
 
+The project uses [Vitest](https://vitest.dev/) for unit and integration testing and [Biome](https://biomejs.dev/) for linting and formatting.
+
+### Linting
+
 Run the linter:
 
 ```bash
-bun lint
+bun run lint
 ```
 
-Run the complete test suite:
+### Type Checking
+
+Run TypeScript type checking:
+
+```bash
+bun run typecheck
+```
+
+### Complete Test Suite
+
+Run all unit and integration tests:
 
 ```bash
 bun run test
 ```
 
-The test suite is written with Vitest and currently contains:
+The test suite currently contains:
 
 - 4 collection resolver unit tests
 - 6 document resolver unit tests
@@ -225,16 +239,34 @@ bunx vitest run tests/integration/document-vault.integration.test.ts
 
 The integration test verifies the application against PostgreSQL.
 
+### Sanity Check
+
+Run the complete local verification:
+
+```bash
+bun run sanity
+```
+
+This runs:
+
+```text
+bun run lint
+bun run typecheck
+bun run test
+```
+
+The sanity check is intended as a quick verification before committing or opening a pull request.
+
 ### Test Summary
 
 The current suite passes with:
 
-```
+```text
 Test Files  3 passed (3)
 Tests       11 passed (11)
 ```
 
-> **Note:** Use `bun run test` rather than `bun test`. The project uses Vitest, and `bun test` invokes Bun's own test runner instead.
+> **Note:** Use `bun run test` rather than `bun test`. The project uses Vitest, while `bun test` invokes Bun's native test runner.
 
 ## GraphQL API
 
