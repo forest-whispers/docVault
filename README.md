@@ -181,24 +181,58 @@ Run the linter:
 bun lint
 ```
 
-Run the test suite:
+Run the complete test suite:
 
 ```bash
 bun run test
 ```
 
-The current test suite contains:
+The test suite is written with Vitest and currently contains:
 
 - 4 collection resolver unit tests
 - 6 document resolver unit tests
 - 1 PostgreSQL integration test
 
+### Unit Tests
+
+Run the collection resolver tests:
+
+```bash
+bunx vitest run tests/unit/collections/collection.resolver.test.ts
+```
+
+Run the document resolver tests:
+
+```bash
+bunx vitest run tests/unit/documents/document.resolver.test.ts
+```
+
+### Integration Test
+
+The integration test requires the PostgreSQL container to be running.
+
+Start PostgreSQL with:
+
+```bash
+docker compose up -d
+```
+
+Then run:
+
+```bash
+bunx vitest run tests/integration/document-vault.integration.test.ts
+```
+
+The integration test verifies the application against PostgreSQL.
+
+### Test Summary
+
+The current suite passes with:
+
 ```
 Test Files  3 passed (3)
 Tests       11 passed (11)
 ```
-
-The integration test uses the PostgreSQL instance provided by Docker Compose.
 
 > **Note:** Use `bun run test` rather than `bun test`. The project uses Vitest, and `bun test` invokes Bun's own test runner instead.
 
