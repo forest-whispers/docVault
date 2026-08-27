@@ -9,7 +9,7 @@
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
         "test:watch": "vitest",
-        "sanity": "bun run lint && bun run typecheck && bun test",
+        "sanity": "bun run lint && bun run typecheck && bun run test",
         "generate": "prisma generate",
         "migrate": "prisma migrate dev",
         "studio": "prisma studio",
